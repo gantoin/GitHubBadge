@@ -58,7 +58,8 @@ class GithubBadgeApplicationTests {
         js.executeScript("window.scrollBy(0,1500)", "");
 
         // Locate the element on the web page
-        WebElement logo = driver.findElement(By.xpath("//*[@id=\"user-profile-frame\"]/div/div[3]/div/div[1]/div[1]/div[1]/div/div/svg"));
+        WebElement frame = driver.findElement(By.xpath("//*[@id=\"user-profile-frame\"]"));
+        WebElement table = frame.findElement(By.className("js-calendar-graph-svg"));
 
         // Get screenshot of the visible part of the web page
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -67,15 +68,22 @@ class GithubBadgeApplicationTests {
         BufferedImage fullScreen = ImageIO.read(screenshot);
 
         //Find location of the webelement logo on the page
-        Point location = logo.getLocation();
+        Point location = table.getLocation();
 
         //Find width and height of the located element logo
-        int width = logo.getSize().getWidth();
-        int height = logo.getSize().getHeight();
+        int width = table.getSize().getWidth();
+        int height = table.getSize().getHeight();
 
         //cropping the full image to get only the logo screenshot
-        BufferedImage logoImage = fullScreen.getSubimage(location.getX(), location.getY(),
-                width, height);
+        System.out.println("location.getX(): " + location.getX());
+        System.out.println("location.getY(): " + location.getY());
+        System.out.println("width: " + width);
+        System.out.println("height: " + height);
+        System.out.println("fullScreen.getWidth(): " + fullScreen.getWidth());
+        System.out.println("fullScreen.getHeight(): " + fullScreen.getHeight());
+
+        BufferedImage logoImage = fullScreen.getSubimage(700, 1180,
+                1365, 245);
         ImageIO.write(logoImage, "png", screenshot);
 
         //Save cropped Image at destination location physically.
